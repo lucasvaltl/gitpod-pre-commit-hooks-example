@@ -1,0 +1,44 @@
+version: 1
+
+tasks:
+  - name: install-precommit-hooks
+    description: Install and configure pre-commit hooks for password detection
+    trigger:
+      - postDevcontainerStart
+    command: |
+      set -e
+      echo "🔧 Installing pre-commit hooks..."
+
+      # Ensure we're in a git repository
+      if [ ! -d .git ]; then
+        echo "❌ Not a git repository. Initializing..."
+        git init
+        git config user.name "Gitpod User"
+        git config user.email "user@gitpod.io"
+      fi
+
+      # Install pre-commit hooks
+      echo "📦 Installing pre-commit hooks into git repository..."
+      pre-commit install
+
+      # Install hook environments
+      echo "🔨 Installing hook environments..."
+      pre-commit install --install-hooks
+
+      # Run initial validation
+      echo "🧪 Running initial validation..."
+      if pre-commit run --all-files; then
+        echo "✅ Pre-commit hooks installed and validated successfully!"
+        echo "🔒 Password detection is now active for all commits."
+      else
+        echo "⚠️  Pre-commit hooks installed but validation found issues."
+        echo "   This is normal if there are existing files that need fixing."
+        echo "🔒 Password detection is now active for all commits."
+      fi
+
+      echo ""
+      echo "📋 Security Setup Complete:"
+      echo "  - Pre-commit hooks are installed and active"
+      echo "  - Password detection will run on every commit"
+      echo "  - Passwords matching the pattern will block commits"
+      echo "  - Run 'pre-commit run --all-files' to scan all files manually"
