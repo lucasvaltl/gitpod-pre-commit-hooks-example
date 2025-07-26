@@ -1,0 +1,1 @@
+# gitpod-pre-commit-hooks-example
