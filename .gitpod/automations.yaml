@@ -1,9 +1,8 @@
-version: 1
-
 tasks:
-  - name: install-precommit-hooks
+  install-precommit-hooks:
+    name: Install and configure pre-commit hooks for password detection
     description: Install and configure pre-commit hooks for password detection
-    trigger:
+    triggeredBy:
       - postDevcontainerStart
     command: |
       set -e
